@@ -1,0 +1,217 @@
+
+
+%Here we use the beamer class instead of article. If we add in the optional [handout] line, all the \pause will be removed. This is useful if you want to create a version of your slides to be shared as a document. Otherwise every \pause creates a new page. Try it out to see the difference.
+\documentclass{beamer}
+%documentclass[handout]{beamer}
+
+
+%This is an alternative way to add packages. More compact, but also more of a pain when you want to remove some.
+\usepackage{tikz, tikz-cd}
+\usepackage{amsmath,amssymb, amsthm, xcolor}
+\usetikzlibrary{calc}
+\usepackage{tcolorbox}
+\usepackage{roboto}     %This is a font package I like
+
+
+\def \FF {\mathbb{F}}
+\def \ZZ {\mathbb{Z}}
+\def \RR {\mathbb{R}}
+\def \CC {\mathbb{C}}
+\def \QQ {\mathbb{Q}}
+\def \AA {\mathbb{A}}
+\def \poly {\mathrm{Poly}}
+\def \sfr {\mathrm{sf}}
+\def\v{\vspace{.15in}}
+\def \C {\mathcal{C}}
+\def \PP {\mathbb{P}}
+\def \NN {\mathbb{N}}
+\def \PConf {\mathrm{PConf}}
+\def \sgn {\mathrm{sgn}}
+\def \E {\mathcal{E}}
+\def \Std {\mathrm{Std}}
+\def \ld {\lessdot}
+
+\def \R {\mathcal{R}}
+\def \M {\mathcal{M}}
+\def \wt {\widetilde}
+\def \U {\mathcal{U}}
+\def \h {\widehat}
+\def \H {\mathcal{H}}
+
+\def \irr {\mathrm{Irr}}
+\def\s{\hspace{.1em}}
+
+\def\preper{\mathrm{PrePer}}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{cor}[thm]{Corollary}
+
+\setbeamerfont{frametitle}{series=\bfseries}
+
+
+%There are many themes you can choose from which dictate the style of the slides. I'm using default here.
+\usetheme{default}
+
+%We can define custom color names.
+%The HTML tells LaTeX that we will be using a hex code to define our color. The {951829} is the hex for Vassar's official Burgundy.
+\definecolor{VassarBurgundy}{HTML}{951829}
+\definecolor{VassarDarkBurgundy}{HTML}{641A2B}
+\definecolor{VassarCream}{HTML}{FFF8EF}
+
+%These lines set the color defaults for structural parts of the slides. Try changing the colors to see what gets affected.
+\setbeamercolor{frametitle}{bg=VassarBurgundy,fg=VassarCream}
+\setbeamercolor{structure}{bg=VassarBurgundy,fg=VassarBurgundy}
+\setbeamercolor{block title}{bg=VassarBurgundy,fg=VassarCream}
+
+%Here are a few other colors I've used in the past, defined using RGB instead of hex.
+\definecolor{forest}{RGB}{0,155,85}
+\definecolor{techblue}{RGB}{46, 175, 255}
+\definecolor{gold}{RGB}{218,165,32}
+\definecolor{cyan}{RGB}{0,255,255}
+
+%Let's create a new command for a large box with a Vassar color theme
+\newcommand{\vassarbox}[1]{
+    \begin{tcolorbox}[
+     colback=VassarBurgundy,        % background color
+     coltext=VassarCream,           % text text
+     halign= center,                % horizontal alignment
+     fontupper={\Huge \bfseries},   % Set the font here
+     sharp corners,                 % no rounded corners for the box
+     boxrule=0pt                    % turn off frame 
+     ]{#1}
+    \end{tcolorbox}
+}
+
+
+\begin{document}
+
+%A beamer document consists of a sequence of frames (i.e. slides). I like to add some comments to help me visually deliniate where each new slide begins.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FRAME 
+
+%In this title slide I've added in a semi-transparent background image.
+{\usebackgroundtemplate{
+    \tikz\node[opacity=0.3]{\includegraphics[width=\paperwidth]{figs/proofs.png}};}
+    \begin{frame}
+        \vassarbox{Let's Learn \LaTeX\\Level 4}
+        
+        \begin{center}
+            {\Large \bfseries Trevor Hyde\\ URSI 2025}
+            \vspace{.4in}
+            
+            {\large \bfseries In which we learn\\ the basics of Beamer}
+        \end{center}
+    \end{frame}
+}%This grouping limits the scope of the background image. Without it, the background gets applied to all the slides.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FRAME 
+
+\begin{frame}{What is Beamer?} %The text in this box gets added as the heading 
+    Beamer is a ``document class'' in LaTeX which allows you to create slide decks. 
+    Some of the benefits include:
+    
+    \begin{itemize}
+        \pause %Adding a \pause will split the frame into multiple pages so you can click to reveal the text. A lot of people like this, but I caution against using too much.
+        \item Scalability: slides look great at large resolutions, which is ideal when your slides will be on a big screen.
+        You can be sure that your slides will look the same on this screen as they will on the big screen.
+        \pause
+        \item Math: we get all the power and control of making professional looking math but now in a slide deck.
+        \pause
+        \item Easy to edit: once you get past the initial learning curve, it allows you to make slide decks that are simple to update and edit.
+    \end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FRAME 
+
+\begin{frame}{Columns} 
+    \begin{columns}[T]  %The [T] dictates that the columns should be aligned along their tops
+        \begin{column}{.5\textwidth}    %Create first column, make width .5 of the full text width.
+            Space on a slide is a precious commodity.
+            It often does not make sense to have text and images vertically stacked as happens by default. 
+            Instead we can split the slide into columns of prescribed width.
+        \end{column}
+        
+        \begin{column}{.5\textwidth}
+            \includegraphics[scale=.25]{figs/species4.jpg}
+        \end{column}
+
+        %You can add more columns, but beware, they're get harder to read the more you add.
+    \end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% FRAME 
+\begin{frame}{Theorems and Proofs}
+    Theorems and proofs appear differently in a Beamer presentation than they do normally.
+    \begin{itemize}
+        \item Every aspect of their appearance is customizable and the default depends on your theme.
+    \end{itemize}
+    
+    \begin{theorem}[Soundness of Roundness]
+        Every circle has no corners.
+    \end{theorem}
+
+    \begin{proof}
+        Well, duh.
+    \end{proof}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% FRAME 
+\begin{frame}
+    If you need extra space, you can leave off the title of the slide and the header will not appear.
+    This is helpful if you need to create big images or complicated diagrams like this one:
+
+    \begin{center}
+        %tikz is a package for creating precise vector graphics in LaTeX. They are created with code--a lot of code. As such, they take up way too much space in your document. A good practice is to put the code for a tikz diagram in its own file and then use the \input function to insert it into your file like this.
+        \input{tikz/big_diagram1}
+    \end{center}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% FRAME 
+\begin{frame}
+Here's another example of the kind of diagram you can make with TikZ.
+
+\begin{center}
+    \input{tikz/big_diagram2}
+\end{center}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FRAME
+\begin{frame}
+    \vassarbox{Thanks!}
+    \vspace{.2in}
+    
+    \begin{center}
+        For more resources on using Beamer, including templates\\
+        \includegraphics[scale=.1]{figs/beamer_resources.png}
+    \end{center}
+
+\end{frame}
+
+\end{document}
+
+%I keep this down here for ease of copy/pasting
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% FRAME 
+\begin{frame}{}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

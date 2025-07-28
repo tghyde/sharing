@@ -1,0 +1,185 @@
+%In this one I'll talk about 
+%1. creating macros
+%2. creating environments
+%3. Tikz diagrams
+%4. Using \input
+
+\documentclass[11pt]{article}
+
+%----------Packages----------
+\usepackage{amsmath}    %Imports standard math functionality
+\usepackage{amssymb}    %Imports standard math symbols
+\usepackage{amsthm}     %Nice theorem environments, courtesy of the AMS
+\usepackage{fullpage}   %Decreases margins on document
+\usepackage{graphicx}   %Allows us to include images in our documents
+\usepackage{float}      %Allows us to create "floats", like tables, that can appear in different parts of the document from where they are created
+\usepackage{xcolor}     %Allows us to color text
+\usepackage{tcolorbox}  %For creating colorful boxes
+
+%----------Theorems----------
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem{question}[theorem]{Question}
+
+
+%----------Macros------------
+
+%This is the most basic way to define a new macro. But be careful: there are no "safety checks" so you might get issues if you try to create a macro re-using a name that already exists.
+\def\ZZ{\mathbb{Z}}
+
+%This is the safest way to create a new macro. You'll get an error if you try to create a macro that already exists. If you really want to overwrite an existing macro in a safe way, you use \renewcommand.
+\newcommand{\RR}{\mathbb{R}}
+
+%We can also make macros that take inputs. For example, I often use one like this to create highlighted text. Here the [1] tells the command to expect one input which we later refer to as #1.
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+
+%We can make more complicated macros with several inputs. Here is one I've used before to quickly create 2 x 2 matrices.
+\newcommand{\mat}[4]{
+    \begin{bmatrix}
+        #1 & #2\\
+        #3 & #4
+    \end{bmatrix}
+}
+
+%Let's get more advanced. Sometimes we need to create math symbols which display differently depending on where they appear. For example, let's say we wanted to have a nice fraction syntax. One issue with the standard \frac{}{} is that when you use it in a line with text, the fraction extends slightly beyond the text and you may not like the way this looks. To remedy this, we can use the \mathchoice function determine the style of the output depending on what context it appears in. The four cases are: display line (math between $$...$$ or \[...\]), inline (math between $...$ or \(...\)), sub/superscripts, and nested sub/superscripts.
+\newcommand{\myfrac}[2]{%
+  \mathchoice
+    {\frac{#1}{#2}}     % Display style
+    {#1/#2}             % Text style (inline)
+    {#1/#2}             % Script style (sub/superscripts)
+    {#1/#2}             % Scriptscript style (nested sub/superscripts)
+}
+
+
+%This is my standard \head command from previous files.
+\newcommand{\head}[1]{
+	\begin{center}         
+		{\large #1}        
+	\end{center}
+	\bigskip               
+}
+
+%-------------Environments----------------
+
+%An environment is a specially formatted block of text, likely one you plan to use several times. These are wrapped like this \begin{NAME}...\end{NAME} where NAME is the name of your environment. For example, consider \begin{enumerate}...\end{enumerate} or \begin{proposition}...\end{proposition} or \begin{tabular}...\end{tabular}. These are all examples of environments. You can create your own!
+
+%For example, suppose you wanted to make a box for displaying formulas which looks like a chalkboard. The syntax for a new environment looks like this
+%\newenvironment{name}{code at the beginning}{code at the end}
+%First you list the name, then in the next {} you put the code for everything at the top of the environment. In the last {} you put code that ends the environment.
+
+\newenvironment{formula}
+{%code at the beginning
+%We start a "color box" and set its options
+  \begin{tcolorbox}[
+    colback=black,      % Set the background color of the box to black
+    coltext=white,      % Set the text color inside the box to white
+    boxsep=1mm,         % Add 5mm padding inside the box (around the formula)
+    boxrule=0pt,        % Set the border line thickness to 0pt for a solid fill
+    center,             % To center the box itself on the page
+  ]
+  %We also start a math display environment.
+    \[
+}
+%When you use the environemnt, everything you put in it will happen in the space between the beginning and ending code. But when defining a new environment, we leave all that blank.
+{%code at the end
+    %We need to close both the math mode and the color box.
+    \]
+    \end{tcolorbox}
+}
+
+
+%Next we have a more elaborate example from my work. When I'm creating homework assignments, I have an environment for writing problems and solutions. My problem environment looks similar to the way theorems and definitions look and are numbered. The main difference is that the text of the problem is in blue to help it visually standout. We can do this by 
+%1) creating a new "theorem style", 
+%2) applying that style, and then 
+%3) creating a new type of theorem.
+%Here is that process in action:
+
+%1) Creating bluestyle
+\newtheoremstyle{bluestyle}%
+  {\topsep}%          Space above environment
+  {\topsep}%          Space below environment
+  {\color{blue}}%     Body font (e.g. blue)
+  {}%                 Indent amount (empty = no indent)
+  {\bfseries\color{black}}%        Header font (e.g., bold)
+  {.}%                Punctuation after header
+  {.5em}%             Space after header
+  {}%                 Header spec (optional: custom header formatting)
+
+%2) Applying bluestyle
+%Any new theorem created after this will be bluestyle until we apply a different theorem style
+\theoremstyle{bluestyle}
+
+%3) Create a new theorem type
+%The name is "problem", the heading is Problem, and [section] tells it how to do the numbering (within a section).
+\newtheorem{problem}{Problem}[section]
+
+%Next I want to create a solution environment which is separated at the top and bottom by horizontal lines. There is a header that says "Solution:" in bold, and like the proof environment, I want it to automatically end with the qed symbol.
+\newenvironment{solution}
+{%Beginning code
+    %The first three lines create the horizontal line wiht some vertical spacing on either side.
+    \vspace{0.5em}%
+    \hrule%
+    \vspace{0.2em}%
+
+    %Create the Solution header. The \! are tiny negative spaces. They bring all text that follows closer to the header.
+    \noindent\textbf{Solution:}\!\!\!\!\!
+    %This next line together with the \popQED in the ending code are what makes the end of proof symbol show up at the end of the proof and to not show up if we use \qedhere to move it to the end of a display line.
+    \pushQED{\qed}
+}
+{%Ending code
+    \popQED
+    \vspace{.2em}
+    \hrule%
+    \vspace{0.75em}%
+}
+
+\setcounter{section}{1}
+
+
+\begin{document} 
+
+%Here I use my custom \head command in place of \maketitle
+\head{Let's Learn \LaTeX\\
+Level 3\\
+URSI 2025\\
+Trevor Hyde
+}
+
+Most of the content of this file is in the \texttt{.tex} comments.
+This file is all about learning how to use \blue{macros} as shortcuts for typing math symbols like $\ZZ$ and 
+\[
+    \mat 1 0 0 1
+\]
+without having to type out the whole code each time.
+These commands can be flexible---the same command can appear differently depending on where we use it!
+For example, compare $\myfrac{3}{4}$ with
+\[
+    \myfrac{3}{4}.
+\]
+
+Sometimes we want to make a formula really stand out, like this gem:
+
+\begin{formula}
+    \sum_{i=1}^n{i} = \frac{n(n+1)}{2}
+\end{formula}
+
+
+\begin{problem}
+    Calculate $1 + 1$.
+\end{problem}
+
+\begin{solution}
+    Everyone knows that $1 + 1 = 2$.
+\end{solution}
+
+\begin{solution}
+    We have
+    \[
+        1 + 1 = 2.\qedhere
+    \]
+\end{solution}
+
+\end{document}

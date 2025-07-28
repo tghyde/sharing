@@ -1,0 +1,127 @@
+%Introduction to LaTeX Part I: Behind the Scenes
+
+%This is the code that generates the PDF file. The code is called LaTeX, a file containing LaTeX code is called a .tex file, and a program that turns LaTeX into a PDF is called is called a LaTeX compiler. There are many different compilers, I like to use the online Overleaf compiler.
+
+%What you are reading here, the sentences that start with a percent sign, are called "comments". They are text notes that are ignored by the compiler. You can use these to leave notes to yourself or whoever else might be reading the source file for your document, or you can use them to temporarily remove some text from your document without deleting it. Any line not starting with a % is ead by the compiler and will (potentially) affect what appears in the document.
+
+%This line goes at the top of any .tex file.
+%It tells the compiler what sort of document you are writing, and in this case also tells it the font size.
+%In most cases, you can just copy this exact line.
+\documentclass[11pt]{article}
+
+%Everything written before the line that says \begin{document} is called the "preamble" of the document. This stuff helps get the document set up. Often the preamble will be full of stuff used to set up the style of the document and to create short cuts. For this document I removed almost everything to just leave the minimal amount of stuff we need to create a working .tex file.
+
+%In the preamble we can do things like telling the document its title and author and the date it is written. When we later write \maketitle, this will make all that info appear at the top of hte first page. But the document can also use this info to display at the tops of subsequent pages or elsewhere.
+
+%There is a lot of prebuilt functionality that can be added to your documents. Since most documents don't need that many fancy add-ons, only the most basic features are preloaded. Everything else can be added using the \usepackage command in the preamble. For example, I wanted to include a clickable hyperlink in the file, so I have included the hyperref package. 
+\usepackage{hyperref}
+
+\title{Let's Learn \LaTeX\\ 
+Level 1\\
+URSI 2025}
+\author{Trevor Hyde}
+
+%What does this line do? Try putting something between the {} or deleting the line to see what affect it has. Don't worry about messing up this file, you can always download it again and start over if things get too crazy.
+\date{}
+
+%This next line starts the actual document. If you scroll to the end of the file you will see \end{document}, which ends what will appear in the document. Try removing this line to see what happens.
+\begin{document}
+\maketitle
+
+%The text below is what appears in the PDF file.
+Writing is central to all scholarship, including mathematics.
+In our modern times that means typing on a computer.
+On thing that sets mathematics apart from other disciplines is the heavy use of symbolic expressions.
+For example, consider this identity discovered by Srinivasa Ramanujan,
+%Below you'll see some special lines of code which create the math that appears in the middle of the first page. The \[ and \] symbols create what is called a "display environment" that centers everything in between and assumes what it sees there is math code. The syntax for writing complicated math expressions looks intimidating, but you'll learn it one piece at a time.
+\[
+    \frac{1}{\pi} = \frac{2\sqrt{2}}{99^2}\sum_{k=0}^\infty \frac{(4k)!}{k!^4}\frac{26390k + 1103}{396^{4k}}.
+\]
+Typing all these symbols in a clean, readable way is possible on a standard document editor like Microsoft Word or Google Docs, but the result looks unprofessional.
+%The next sentence includes a footnote.
+This is where LaTeX\footnote{People pronounce this either law-tech or lay-tech.} comes in: LaTeX is essentially a programming language for writing documents.
+It allows you to write text and symbolic expressions together with unlimited control over the formatting of your document.
+LaTeX is the universal standard for writing in math, physics, engineering, computer science, economics, and statistics.
+If you want to make a professional grade technical document, then you want to write it in LaTeX.
+
+%Spacing is a bit tricky in LaTeX since you are allowed so much control. For example, you can add tons of space between these paragraphs in the code editor, but you won't see it reflected in the document.
+
+
+
+
+
+
+
+
+%The same thing is true with horizontal white space. I put a bunch of pointless spaces between the first two words of this sentence, but nothing happens when we compile.
+As         with any powerful tool, LaTeX has a learning curve.
+%There are code commands that allow us to add in precise amounts of vertical and horizontal space. We won't worry about that for now.
+Some of the code will look intimidating and be hard to remember---you  may get frustrated trying to get your document formatting to look right.
+But armed with Google, the new AI chat bots, and your ever-helpful instructor, you will soon be TeXing like a pro!
+
+%In the next couple sentences you'll see some text formatting. The \textbf command makes text bold and the \texttt command makes the text look like it was written by a typewriter.
+The only  way to really learn how to use LaTeX is to use it, \textbf{and use it we shall}! 
+
+\section{Getting Started}
+
+LaTeX code can be written in any text editor.
+All you need to do is to save the file with \texttt{.tex} at the end of the filename and it will become a LaTeX file.
+%One thing you may have noticed is that I put each sentence on its own line. This isn't necessary, you can type a whole paragraph on a single line of the code editor. There are a couple reasons I like to do this, one being that you can double click on a line in the PDF on the right and the code editor will jump to that line. This is useful when editing a long document. If you put whole paragraphs onto a single line, then the editor will only jump to the paragraph instead of the line.
+However, typically one writes the code in what is called a ``LaTeX compiler''.
+These are programs that can read LaTeX code and turn it into a nice looking PDF.
+There are many LaTeX compilers including ones that you can download (for free) and ones that you can use online (also for free).
+%Here is where we use the hyperlink functionality that we added at the beginning of the document.
+I prefer to use an online editor/compiler called \href{https://www.overleaf.com/}{Overleaf}.
+The benefit of using a service like Overleaf is that you can access it from any computer and all your documents are saved on the cloud.
+The downside is that you need internet access to use it.
+
+Here are step-by-step instructions for getting started with Overleaf.
+%This is how you can create a numbered list.
+\begin{enumerate}
+    \item Open the website (\texttt{https://www.overleaf.com}) and then click the \textbf{Register} button if you are new to Overleaf (if you already have an account, go ahead and log in.)
+
+    \item Once you are in, you should see a page with a heading that says \textbf{All Projects}.
+    This is where you will see all of the projects you have worked on.
+    Each project can have multiples \texttt{.tex} files.
+    I usually find it convenient to keep all related files in one project.
+    For example, I am using a single project to create all the documents for this workshop.
+    This is especially useful if you want to copy and paste some LaTeX code between files or use some pictures in more than one file.
+    Click the \textbf{New Project} button.
+
+    \item A menu should pop up asking you what sort of project you would like to make; these just preload some templates for you.
+    For now, select \textbf{Blank Project} and name it \textbf{URSI workshop}.
+
+    \item Now you are in the URSI workshop project.
+    On the left you will see a list of files and folders in this project.
+    The next window is where you type the LaTeX code, and the right most window is where the compiled document will appear.\footnote{This is just the default layout, you can rearrange things if you'd like.}
+    The project comes with one file that is called \texttt{main.tex}.
+    You can rename the file to anything you want.
+    Near the top left, you will see an icon for an \textbf{Upload} button (a horizontal rectangle with an arrow pointing up out of it); click it.
+
+    \item Download the file \texttt{Introduction to LaTeX.tex} from Github and upload it to Overleaf.
+    This is the file I wrote to create the PDF file you are currently reading.
+    With the file selected, you will see a bunch of stuff written in code part of the file, and a copy of this PDF on the right.
+
+    \item Go through the document and read the hidden comments written there.
+    Experiment with making changes to the file.
+    To make the changes appear, just hit the \textbf{Recompile} button at the top center of the page.
+    It will take a moment, and then the updated PDF will be displayed.
+    When beginning with LaTeX it is good to recompile often to help you catch any errors.
+    As you get better you can save time by only recompiling occasionally.
+
+    \item If you want to download the compiled PDF file or the \texttt{.tex} source files, click the \textbf{Menu} button in the top left; both options will be shown at the top of the menu.
+\end{enumerate}
+
+\section{LaTeX Warmup}
+
+Please create a new \texttt{.tex} file and include the following:
+\begin{enumerate}
+    \item Title
+    \item Your name as the author
+    \item A paragraph including some formatted text.
+    \item A display environment with a mathematical identity.
+    \item A list.
+    \item A comment in the \texttt{.tex} file.
+\end{enumerate}
+Be creative, have some fun.
+\end{document}
